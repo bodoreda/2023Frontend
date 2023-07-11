@@ -1,8 +1,8 @@
 <template>
   <div class="header">
     <router-link to="/Main">메인</router-link> |
-    <router-link to="/Nicepay">NicePay</router-link> |
     <router-link to="/Login">로그인</router-link> |
+    <router-link to="/Nicepay">NicePay결제</router-link> |
   </div>
 </template>
 

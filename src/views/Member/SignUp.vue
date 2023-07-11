@@ -65,7 +65,7 @@ const methods = {
             for(let key in state.signUpParams) {
                 state.signUpParams[key] = ''
             }
-            alert('아이디 또는 휴대폰 중복')
+            alert('에러 : 아이디 또는 휴대폰 중복 또는 유레카 인스턴스 비활성')
         })
     },
 

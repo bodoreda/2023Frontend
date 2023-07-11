@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router"
 import Main from "@/views/Main/Main.vue"
-import NicePay from "@/views/NicePay/NicePay.vue"
 import Login from "@/views/Member/Login.vue"
+import NicePay from "@/views/NicePay/NicePay.vue"
 
 const routes = [
     {
@@ -10,15 +10,15 @@ const routes = [
         component: Main,
     },
     {
+        path: '/Login',
+        name: 'Login',
+        component: Login,
+    },
+    {
         path: '/NicePay',
         name: 'Nicepay',
         component: NicePay,
     },
-    {
-        path: '/Login',
-        name: 'Login',
-        component: Login,
-    }
 ]
 
 const router = createRouter({

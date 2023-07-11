@@ -54,9 +54,9 @@ const methods = {
             for(let key in state.loginParams) {
                 state.loginParams[key] = ''
             }
-            if(res.data.member) {
+            if(res.data.cuid) {
                 alert("로그인 성공")
-                window.location.href = '/main'
+                // window.location.href = '/main'
             }else{
                 alert("아이디와 비밀번호를 확인해주세요")
             }

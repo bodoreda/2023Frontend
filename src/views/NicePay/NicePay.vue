@@ -60,6 +60,7 @@
     <div v-show="state.show.cancelShow">
         <input type="text" v-model="state.cancelParams.tid" placeholder="거래번호"><br>
         <input type="text" v-model="state.cancelParams.moid" placeholder="주문번호"><br>
+        <input type="text" v-model="state.cancelParams.cancelAmt" placeholder="환불금액"><br>
         <input type="text" v-model="state.cancelParams.refundAcctNo" placeholder="환불계좌번호"><br>
         <input type="text" v-model="state.cancelParams.refundBankCd" placeholder="은행코드"> <span>004:KB국민, 011:농협</span><br>
         <input type="text" v-model="state.cancelParams.refundAcctNm" placeholder="환불계좌주명"><br>
@@ -128,6 +129,7 @@ const state = reactive({
     cancelParams: {
         tid: '',
         moid: '',
+        cancelAmt: '',
         refundAcctNo: '',   //환불계좌번호(숫자만)
         refundBankCd: '',   //환불계좌코드(은행코드 참고)
         refundAcctNm: '',   //환불계좌주명(euc-kr)
