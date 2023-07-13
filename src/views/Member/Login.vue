@@ -1,5 +1,5 @@
 <template>
-    <table>
+    <table v-show="state.show.loginShow">
         <tr>
             <td colspan="2"><input type="text" placeholder="아이디" v-model="state.loginParams.loginId"></td>
         </tr>
@@ -22,7 +22,8 @@
         </tr>
     </table>
     <br>
-    <sign-up v-show="state.show.signUpShow" @signUpSuccess="methods.handleSignUpSuccess"/>
+    <sign-up v-show="state.show.signUpShow" @signUpSuccess="methods.handleSignUpSuccess" />
+    <my-page v-show="state.show.myPage" @logoutSuccess="methods.handleLogoutSuccess" />
 </template>
 
 <script setup>
@@ -30,9 +31,15 @@ import { reactive, onMounted } from 'vue'
 import sha256 from 'crypto-js/sha256'
 import axios from 'axios'
 import signUp from './SignUp.vue'
+import myPage from './MyPage.vue'
 
 onMounted(() => {
-
+    const accessToken = sessionStorage.getItem('accessToken')
+    if(accessToken) {
+        state.show.signUpShow = false
+        state.show.loginShow = false
+        state.show.myPage = true
+    }
 })
 
 const state = reactive({
@@ -42,6 +49,7 @@ const state = reactive({
     },
     show: {
         signUpShow: false,
+        loginShow: true,
     }
 })
 
@@ -54,9 +62,20 @@ const methods = {
             for(let key in state.loginParams) {
                 state.loginParams[key] = ''
             }
-            if(res.data.cuid) {
+            if(res.headers.authorization) {
                 alert("로그인 성공")
-                // window.location.href = '/main'
+                const accessToken = res.headers.authorization
+                sessionStorage.setItem('accessToken', accessToken)
+                state.show.loginShow = false
+                state.show.myPage = true
+
+                // sessionStorage에 토큰을 저장하는 것은 적절하지 않음. 아래 6가지 고려 필요
+                // 1. HTTPS 사용: 암호화된 HTTPS 연결을 통해 통신하는 것이 중요합니다. HTTPS는 데이터의 기밀성과 무결성을 보호하는 데 도움이 됩니다.
+                // 2. HttpOnly 쿠키 사용: 토큰을 쿠키에 저장할 때 HttpOnly 속성을 설정하여 클라이언트 측에서 스크립트를 통한 접근을 막습니다. 이를 통해 XSS 공격으로부터 보호될 수 있습니다.
+                // 3. 토큰 유효성 검사: 클라이언트 측에서 토큰을 검증하는 방법을 구현해야 합니다. 예를 들어, 서버에서 제공한 토큰을 서명 검증하고 만료 시간을 확인하여 유효한 토큰인지 확인해야 합니다.
+                // 4. 보안 헤더 설정: 적절한 보안 헤더를 설정하여 웹 애플리케이션을 보호해야 합니다. 예를 들어, Content Security Policy (CSP), X-Content-Type-Options, X-XSS-Protection 등의 보안 헤더를 사용할 수 있습니다.
+                // 5. CSRF 방어: CSRF(Cross-Site Request Forgery) 공격으로부터 보호하기 위해 적절한 CSRF 방어 메커니즘을 구현해야 합니다.
+                // 6. 토큰 관리: 토큰의 안전한 저장소와 관리 메커니즘을 구현해야 합니다. 예를 들어, 서버 측에 토큰을 안전하게 저장하고, 필요한 경우 토큰을 갱신하거나 폐기할 수 있는 방법을 구현해야 합니다.
             }else{
                 alert("아이디와 비밀번호를 확인해주세요")
             }
@@ -68,6 +87,10 @@ const methods = {
     handleSignUpSuccess() {
         state.show.signUpShow = false
     },
+    handleLogoutSuccess() {
+        state.show.myPage = false
+        state.show.loginShow = true
+    }
 }
 
 </script>

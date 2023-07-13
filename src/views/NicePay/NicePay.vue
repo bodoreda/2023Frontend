@@ -73,7 +73,7 @@
 
 <script setup>
 import { reactive, onMounted } from 'vue'
-import axios from 'axios'
+import api from '@/api/service.js'
 import moment from 'moment'
 import orderResult from './OrderResult.vue'
 import cancelResult from './CancelResult.vue'
@@ -158,7 +158,7 @@ const state = reactive({
 
 const methods = {
     goOrder() {
-        axios.post('/v1/external/order', state.orderParams).then((res) => {
+        api.post('/v1/external/order', state.orderParams).then((res) => {
             state.orderParams = res.data
             for(let key in state.show) {
                 state.show[key] = false
@@ -173,7 +173,7 @@ const methods = {
         state.show.cancelShow = true
     },
     cancel() {
-        axios.post('/v1/external/cancel', state.cancelParams).then((res) => {
+        api.post('/v1/external/cancel', state.cancelParams).then((res) => {
             state.cancelResultParams = res.data
             
             for(let key in state.show) {
@@ -183,7 +183,7 @@ const methods = {
         })
     },
     async goOrderList() {
-        await axios.get('/v1/external/getOrderList').then((res) => {
+        await api.get('/v1/external/getOrderList').then((res) => {
             state.orderList.list = res.data
         })
         for(let key in state.show) {
@@ -212,7 +212,7 @@ window.nicepaySubmit = function() {
     state.newFormElements[element.name] = element.value;
   }
   
-  axios.post('/v1/external/callback', state.newFormElements).then((res) => {
+  api.post('/v1/external/callback', state.newFormElements).then((res) => {
     console.log(res.data)
     state.resultParams = res.data
     // 가상계좌만료일

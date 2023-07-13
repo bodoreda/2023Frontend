@@ -29,7 +29,7 @@
 <script setup>
 import { reactive, onMounted, defineEmits } from 'vue'
 import sha256 from 'crypto-js/sha256'
-import axios from 'axios'
+import api from '@/api/service.js'
 
 onMounted(() => {
 
@@ -50,7 +50,7 @@ const emit = defineEmits([ 'signUpSuccess' ])
 const methods = {
     signUp() {
         state.signUpParams.encPw = sha256(state.signUpParams.encPw).toString()
-        axios.post('/v1/member/signUp', state.signUpParams).then((res) => {
+        api.post('/v1/member/signUp', state.signUpParams).then((res) => {
             for(let key in state.signUpParams) {
                 state.signUpParams[key] = ''
             }
