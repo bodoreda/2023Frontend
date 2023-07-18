@@ -23,7 +23,7 @@
     </table>
     <br>
     <sign-up v-show="state.show.signUpShow" @signUpSuccess="methods.handleSignUpSuccess" />
-    <my-page v-show="state.show.myPage" @logoutSuccess="methods.handleLogoutSuccess" />
+    <my-page v-show="state.show.myPage" @logoutSuccess="methods.handleLogoutSuccess" :userInfo="state.userInfo" />
 </template>
 
 <script setup>
@@ -50,6 +50,9 @@ const state = reactive({
     show: {
         signUpShow: false,
         loginShow: true,
+    },
+    userInfo: {
+
     }
 })
 
@@ -76,6 +79,8 @@ const methods = {
                 // 4. 보안 헤더 설정: 적절한 보안 헤더를 설정하여 웹 애플리케이션을 보호해야 합니다. 예를 들어, Content Security Policy (CSP), X-Content-Type-Options, X-XSS-Protection 등의 보안 헤더를 사용할 수 있습니다.
                 // 5. CSRF 방어: CSRF(Cross-Site Request Forgery) 공격으로부터 보호하기 위해 적절한 CSRF 방어 메커니즘을 구현해야 합니다.
                 // 6. 토큰 관리: 토큰의 안전한 저장소와 관리 메커니즘을 구현해야 합니다. 예를 들어, 서버 측에 토큰을 안전하게 저장하고, 필요한 경우 토큰을 갱신하거나 폐기할 수 있는 방법을 구현해야 합니다.
+
+                state.userInfo = res.data.userInfo
             }else{
                 alert("아이디와 비밀번호를 확인해주세요")
             }
